@@ -508,12 +508,11 @@ public class OrderServiceImpl extends BaseMongoServiceImpl<TradeOrder, Serializa
 				merchants = merchantService.findAll();
 				applications = merchantApplicationService.findAll();
 			}
-
 			/**
 			 * 统计查询渠道支付数据
 			 */
 			resultMap.put("channelStatistics", statisticsChannel(logicalCondition));
-			Map<String, Object> merchantMap = merchants.stream().collect(Collectors.toMap(Merchant::getMerchantNo, Merchant::getMerchantName));
+			Map<String, Object> merchantMap = new HashMap<String, Object>();//merchants.stream().collect(Collectors.toMap(Merchant::getMerchantNo, Merchant::getMerchantName));
 			resultMap.put("applicationsStatistics", statisticsApplication(logicalCondition, applications, merchantMap));
 			resultMap.putAll(statisticsMerchant(logicalCondition, merchants));
 			//resultMap.put("application", applications);
