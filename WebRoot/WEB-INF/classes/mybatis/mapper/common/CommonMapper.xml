@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunshine.common.vo">
+  <resultMap id="treeVoMap" type="com.sunshine.common.vo.TreeNodeVo" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="HAD_SUB" property="isParent" jdbcType="VARCHAR" />
+    <result column="CHECKED" property="checked" jdbcType="VARCHAR" />
+    <result column="OPEN" property="open" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="findResourceTreeByRoleIdAndParentId" resultMap="treeVoMap" parameterType="java.util.Map">
+  	select ID, NAME NAME, PARENT_ID PID ,'true' OPEN,
+  		(CASE WHEN ID IN(SELECT DISTINCT(PARENT_ID) FROM SYS_RESOURCE) THEN 'true' ELSE 'false' END) HAD_SUB,
+  		<if test="roleId != null and roleId != '' ">
+  			(case when id in (
+        		SELECT RESOURCE_ID FROM SYS_ROLE_RESOURCE WHERE ROLE_ID = #{roleId,jdbcType=VARCHAR}
+        	) then 'true' else 'false' end) CHECKED
+  		</if>
+  		<if test="roleId == null or roleId == ''">
+  			'false' CHECKED
+  		</if>
+    from SYS_RESOURCE 
+    WHERE STATUS = 1
+    <if test="parentId == null">
+    	AND (PARENT_ID is null or PARENT_ID = '')
+    </if>
+    <if test="parentId != null">
+    	AND PARENT_ID = #{parentId}
+    </if>
+  </select>
+  
+  <select id="findResourceTreeByRoleId" resultMap="treeVoMap" parameterType="java.util.Map">
+  	select ID, NAME NAME, PARENT_ID PID , 'true' OPEN,
+  		(CASE WHEN ID IN(SELECT DISTINCT(PARENT_ID) FROM SYS_RESOURCE) THEN 'true' ELSE 'false' END) HAD_SUB,
+  		<if test="roleId != null and roleId != '' ">
+  			(case when id in (
+        		SELECT RESOURCE_ID FROM SYS_ROLE_RESOURCE WHERE ROLE_ID = #{roleId,jdbcType=VARCHAR}
+        	) then 'true' else 'false' end) CHECKED
+  		</if>
+  		<if test="roleId == null or roleId == ''">
+  			'false' CHECKED
+  		</if>
+    from SYS_RESOURCE 
+    WHERE STATUS = 1
+  </select>
+  
+  <select id="findMenuResourceTreeByResourceId" resultMap="treeVoMap" parameterType="java.util.Map">
+    select ID, NAME NAME, PARENT_ID PID , 'true' OPEN,
+        (CASE WHEN ID IN(SELECT DISTINCT(PARENT_ID) FROM SYS_RESOURCE where type='1') THEN 'true' ELSE 'false' END) HAD_SUB,
+        <if test="resourceId != null and resourceId != '' ">
+            (CASE WHEN ID in(SELECT DISTINCT(PARENT_ID) FROM SYS_RESOURCE where id=#{resourceId,jdbcType=VARCHAR}) THEN 'true' ELSE 'false' END) CHECKED
+        </if>
+        <if test="resourceId == null or resourceId == ''">
+            'false' CHECKED
+        </if>
+    from SYS_RESOURCE 
+    WHERE STATUS = 1 and type='1'
+  </select>
+  
+  <select id="findDeptTreeByUserIdAndParentId" resultMap="treeVoMap" parameterType="java.util.Map">
+  	select 
+  		ID, NAME, PARENT_ID PID , 'true' OPEN,
+  		(CASE WHEN ID IN(SELECT DISTINCT(PARENT_ID) FROM SYS_DEPT) THEN 'true' ELSE 'false' END) HAD_SUB,
+  		<if test="userId != null and userId != '' ">
+  			(case when id =  (
+        		SELECT DEPT_ID FROM SYS_USER WHERE ID = #{userId,jdbcType=VARCHAR}
+        	) then 'true' else 'false' end) CHECKED
+  		</if>
+  		<if test="userId == null or userId == ''">
+  			'false' CHECKED
+  		</if>
+    from SYS_DEPT 
+    WHERE 1=1
+    <if test="parentId == null">
+    	AND (PARENT_ID is null or PARENT_ID = '')
+    </if>
+    <if test="parentId != null">
+    	AND PARENT_ID = #{parentId}
+    </if>
+  </select>
+  
+  <select id="findDeptTreeByUserId" resultMap="treeVoMap" parameterType="java.util.Map">
+  	select 
+  		ID, NAME NAME, PARENT_ID PID ,(CASE WHEN ID IN(SELECT DISTINCT(PARENT_ID) FROM SYS_DEPT) THEN 'true' ELSE 'false' END) HAD_SUB ,  'true' OPEN,
+  		<if test="userId != null and userId != '' ">
+  			(case when id =  (
+        		SELECT DEPT_ID FROM SYS_USER WHERE ID = #{userId,jdbcType=VARCHAR}
+        	) then 'true' else 'false' end) CHECKED
+  		</if>
+  		<if test="userId == null or userId == ''">
+  			'false' CHECKED
+  		</if>
+    from SYS_DEPT 
+  </select>
+</mapper>

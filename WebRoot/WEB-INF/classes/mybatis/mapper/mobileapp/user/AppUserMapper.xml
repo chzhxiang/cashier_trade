@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunshine.mobileapp.login.entity.AppUser">
+  <resultMap id="BaseResultMap" type="com.sunshine.mobileapp.login.entity.AppUser">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="USER_ACCOUNT" jdbcType="VARCHAR" property="userAccount" />
+    <result column="USER_PASSWORD" jdbcType="VARCHAR" property="userPassword" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="USER_PATIENT" jdbcType="VARCHAR" property="userPatient" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, USER_ACCOUNT, USER_PASSWORD, USER_NAME, USER_PATIENT
+  </sql>
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from BIZ_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sunshine.mobileapp.login.entity.AppUser">
+    insert into BIZ_USER (ID, USER_ACCOUNT, USER_PASSWORD, 
+      USER_NAME, USER_PATIENT)
+    values (#{id,jdbcType=VARCHAR}, #{userAccount,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userName,jdbcType=VARCHAR}, #{userPatient,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertWithoutNull" parameterType="com.sunshine.mobileapp.login.entity.AppUser">
+    insert into BIZ_USER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="userAccount != null">
+        USER_ACCOUNT,
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD,
+      </if>
+      <if test="userName != null">
+        USER_NAME,
+      </if>
+      <if test="userPatient != null">
+        USER_PATIENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="userAccount != null">
+        #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPatient != null">
+        #{userPatient,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.sunshine.mobileapp.login.entity.AppUser">
+    update BIZ_USER
+    <set>
+      <if test="userAccount != null">
+        USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null">
+        USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userName != null">
+        USER_NAME = #{userName,jdbcType=VARCHAR},
+      </if>
+      <if test="userPatient != null">
+        USER_PATIENT = #{userPatient,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.sunshine.mobileapp.login.entity.AppUser">
+    update BIZ_USER
+    set USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR},
+      USER_PASSWORD = #{userPassword,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      USER_PATIENT = #{userPatient,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <sql id="Base_Column_Where">
+    <where>
+      <if test="userAccount != null">
+         and USER_ACCOUNT = #{userAccount,jdbcType=VARCHAR}
+      </if>
+      <if test="userPassword != null">
+         and USER_PASSWORD = #{userPassword,jdbcType=VARCHAR}
+      </if>
+      <if test="userName != null">
+         and USER_NAME = #{userName,jdbcType=VARCHAR}
+      </if>
+      <if test="userPatient != null">
+         and USER_PATIENT = #{userPatient,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_USER
+  </select>
+  <select id="findListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_USER
+    <where>
+       1=1 
+      <if test="searchValue != null and searchValue != ''">
+        and ( 
+        (USER_ACCOUNT like CONCAT('%',trim('${searchValue}'),'%' ) )  or (USER_PASSWORD like CONCAT('%',trim('${searchValue}'),'%' ) )  or (USER_NAME like CONCAT('%',trim('${searchValue}'),'%' ) )  or (USER_PATIENT like CONCAT('%',trim('${searchValue}'),'%' ) ) 
+         )
+      </if>
+    </where>
+  </select>
+  <select id="findByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_USER
+    <where >
+      ID in 
+      <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+         #{item} 
+      </foreach>
+    </where >
+  </select>
+  <delete id="deleteByIds" parameterType="java.util.List">
+     delete from 
+    BIZ_USER
+    <where >
+      ID in 
+      <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+         #{item} 
+      </foreach>
+    </where >
+  </delete>
+  <insert id="batchInsert" parameterType="java.util.List">
+     insert into 
+    BIZ_USER
+    ( ID USER_ACCOUNT USER_PASSWORD USER_NAME USER_PATIENT)
+    values
+    <foreach collection="list" index="index" item="entity" separator=",">
+      (
+      #{entity.id,jdbcType=VARCHAR},#{entity.userAccount,jdbcType=VARCHAR},#{entity.userPassword,jdbcType=VARCHAR},#{entity.userName,jdbcType=VARCHAR},#{entity.userPatient,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+  
+  <select id="findByAccount" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select <include refid="Base_Column_List" /> 
+		   from BIZ_USER h 
+		where h.USER_ACCOUNT = #{account,jdbcType=VARCHAR} and h.USER_PASSWORD = #{password,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

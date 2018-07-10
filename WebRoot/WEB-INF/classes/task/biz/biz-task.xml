@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+    xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+    default-lazy-init="true">    
+    
+    <!-- 支付订单异常队列处理 -->
+    <bean id="handleOrderExceptionTask" class="com.sunshine.task.biz.taskitem.HandleOrderExceptionTask" />
+    
+    <!-- 支付订单异常处理 -->
+    <bean id="handleOrderExceptionDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="handleOrderExceptionTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="handlePayOrderExceptionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="handleOrderExceptionDetail" />
+        <property name="cronExpression" value="${task.biz.cron.handlePayOrder}" />
+    </bean>
+    
+    <!--退费异常处理定时任务-->
+    <bean id="handleRefundExceptionTask" class="com.sunshine.task.biz.taskitem.HandleRefundExceptionTask" />
+	
+	<bean id="handleRefundExceptionDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="handleRefundExceptionTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+     <bean id="handleRefundExceptionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="handleRefundExceptionDetail" />
+        <property name="cronExpression" value="${task.biz.cron.handleOrder}" />
+    </bean>
+    
+     <!-- 支付超时订单异常队列处理 -->
+    <bean id="handleOrderOvertimeExceptionTask" class="com.sunshine.task.biz.taskitem.HandleOrderOvertimeExceptionTask" />
+    
+    <!-- 支付超时订单异常处理 -->
+    <bean id="handleOrderOvertimeExceptionDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="handleOrderOvertimeExceptionTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="handleOrderOvertimeExceptionTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="handleOrderOvertimeExceptionDetail" />
+        <property name="cronExpression" value="${task.biz.cron.handleOvertime}" />
+    </bean>
+    
+     <!-- 小额支付银行卡状态处理 -->
+    <bean id="handleCardStatusTask" class="com.sunshine.task.biz.taskitem.HandleCardStatusTask" />
+    
+    <!-- 小额支付银行卡状态处理 -->
+    <bean id="handleCardStatusDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="handleCardStatusTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="handleCardStatusTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="handleCardStatusDetail" />
+        <property name="cronExpression" value="${task.biz.cron.handleCardStatusTime}" />
+    </bean>
+    
+     <!-- 小额支付银行卡支付受限处理 -->
+    <bean id="handleCardPayLimitTask" class="com.sunshine.task.biz.taskitem.HandleCardPayLimitTask" />
+    
+    <!-- 小额支付银行卡支付受限处理 -->
+    <bean id="handleCardPayLimitDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <property name="targetObject" ref="handleCardPayLimitTask" />
+        <property name="targetMethod" value="startUp" />
+        <property name="concurrent" value="false"/>
+    </bean>
+    <bean id="handleCardPayLimitTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="handleCardPayLimitDetail" />
+        <property name="cronExpression" value="${task.biz.cron.handleCardPayLimitTime}" />
+    </bean>
+</beans>

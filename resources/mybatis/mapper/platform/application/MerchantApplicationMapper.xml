@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.application.entity.MerchantApplication">
+	<resultMap id="BaseResultMap"
+		type="com.sunshine.platform.application.entity.MerchantApplication">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
+		<result column="APP_IDENTIFY" property="appIdentify" jdbcType="VARCHAR" />
+		<result column="APP_NAME" property="appName" jdbcType="VARCHAR" />
+		<result column="COMMENT" property="comment" jdbcType="VARCHAR" />
+		<result column="VALIDATE_TIME" property="validateTime"
+			jdbcType="INTEGER" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="APP_SECRET" property="appSecret" jdbcType="VARCHAR" />
+		<result column="MASTER_SECRET" property="masterSecret"
+			jdbcType="VARCHAR" />
+		<result column="PUBLIC_KEY" property="publicKey" jdbcType="VARCHAR" />
+		<result column="APP_PUBLIC_KEY" property="appPublicKey" jdbcType="VARCHAR" />
+		<result column="APP_PRIVATE_KEY" property="appPrivateKey" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,MERCHANT_NO,APP_IDENTIFY,APP_NAME,COMMENT,VALIDATE_TIME,
+		APP_ID,APP_SECRET,MASTER_SECRET,PUBLIC_KEY,APP_PUBLIC_KEY,APP_PRIVATE_KEY,
+		STATUS,CP,CP_NAME,CT,EP,EP_NAME,ET
+	</sql>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT_APPLICATION WHERE ID=#{id}
+	</select>
+	
+	<select id="findByAppId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT_APPLICATION WHERE APP_ID=#{appId}
+	</select>
+
+	<select id="findByMerchantNo" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT_APPLICATION
+		WHERE MERCHANT_NO =
+		#{merchantNo,jdbcType=VARCHAR} order by CT desc
+	</select>
+	
+	<select id="findByMerchantNoAndAppID" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT_APPLICATION
+		WHERE MERCHANT_NO =
+		#{merchantNo,jdbcType=VARCHAR} AND APP_ID = #{appId,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT_APPLICATION
+	</select>
+
+	<insert id="insert"
+		parameterType="com.sunshine.platform.application.entity.MerchantApplication">
+		INSERT INTO BIZ_MERCHANT_APPLICATION(
+		<include refid="Base_Column_List" />
+		) VALUES(
+		#{id,jdbcType=VARCHAR},#{merchantNo,jdbcType=VARCHAR},#{appIdentify,jdbcType=VARCHAR},
+		#{appName,jdbcType=VARCHAR},#{comment,jdbcType=VARCHAR},#{validateTime,jdbcType=INTEGER},
+		#{appId,jdbcType=VARCHAR},#{appSecret,jdbcType=VARCHAR},#{masterSecret,jdbcType=VARCHAR},
+		#{publicKey,jdbcType=VARCHAR},#{appPublicKey,jdbcType=VARCHAR},
+		#{appPrivateKey,jdbcType=INTEGER},#{status,jdbcType=INTEGER},
+		#{cp,jdbcType=VARCHAR},#{cpName,jdbcType=VARCHAR},#{ct,jdbcType=TIMESTAMP},
+		#{ep,jdbcType=VARCHAR},#{epName,jdbcType=VARCHAR},#{et,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<!-- <update id="update"
+		parameterType="com.sunshine.platform.application.entity.MerchantApplication">
+		UPDATE BIZ_MERCHANT_APPLICATION SET
+		APP_IDENTIFY=#{appIdentify,jdbcType=VARCHAR},
+		APP_NAME=#{appName,jdbcType=VARCHAR},
+		COMMENT=#{comment,jdbcType=VARCHAR},
+		VALIDATE_TIME=#{validateTime,jdbcType=INTEGER},
+		APP_ID=#{appId,jdbcType=VARCHAR},
+		APP_SECRET=#{appSecret,jdbcType=VARCHAR},
+		MASTER_SECRET=#{masterSecret,jdbcType=VARCHAR},
+		PUBLIC_KEY=#{publicKey,jdbcType=VARCHAR},
+		YGKZ_PUBLIC_KEY=#{ygkzPublicKey,jdbcType=VARCHAR},
+		YGKZ_PRIVATE_KEY=#{ygkzPrivateKey,jdbcType=VARCHAR},
+		EP=#{ep,jdbcType=VARCHAR},EP_NAME=#{epName,jdbcType=VARCHAR},ET=#{et,jdbcType=TIMESTAMP}
+		WHERE ID=#{id}
+	</update> -->
+	<update id="update"
+		parameterType="com.sunshine.platform.application.entity.MerchantApplication">
+		UPDATE BIZ_MERCHANT_APPLICATION SET
+		APP_NAME=#{appName,jdbcType=VARCHAR},
+		COMMENT=#{comment,jdbcType=VARCHAR},
+		VALIDATE_TIME=#{validateTime,jdbcType=INTEGER},
+		PUBLIC_KEY=#{publicKey,jdbcType=VARCHAR},
+		EP=#{ep,jdbcType=VARCHAR},EP_NAME=#{epName,jdbcType=VARCHAR},ET=#{et,jdbcType=TIMESTAMP}
+		WHERE ID=#{id}
+	</update>
+
+</mapper>

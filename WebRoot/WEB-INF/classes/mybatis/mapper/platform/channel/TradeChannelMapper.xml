@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.channel.entity.TradeChannel">
+	<resultMap id="BaseResultMap"
+		type="com.sunshine.platform.channel.entity.TradeChannel">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="CODE" property="code" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="VALUE" property="value" jdbcType="INTEGER" />
+		<result column="ICON" property="icon" jdbcType="VARCHAR" />
+		<result column="SCENARIOS" property="scenarios" jdbcType="VARCHAR" />
+		<result column="SETTLEMENT_CYCLE" property="settlementCycle"
+			jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="INTEGER" />
+		<result column="SEQ" property="seq" jdbcType="INTEGER" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,CODE,VALUE,NAME,ICON,SCENARIOS,SETTLEMENT_CYCLE,TYPE,SEQ,CP,CP_NAME,CT,EP,EP_NAME,ET
+	</sql>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_TRADE_CHANNEL ORDER BY SEQ ASC
+	</select>
+</mapper>

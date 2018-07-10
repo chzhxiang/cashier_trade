@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+    xmlns:context="http://www.springframework.org/schema/context" xmlns:aop="http://www.springframework.org/schema/aop" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd"
+    default-lazy-init="false">
+	<bean id="mongoDBConfig" class="com.sunshine.framework.mvc.mongodb.config.MongoDBConfig">
+		<property name="user" value="${mongo.server.user}"></property>
+		<property name="dataBase" value="${mongo.server.dataBase}"></property>
+		<property name="passWord" value="${mongo.server.passWord}"></property>
+		<property name="serverAddresses" value="${mongo.server.addresses}"></property>
+		<property name="connectionsPerHost" value="${mongo.server.connectionsPerHost}"></property>
+		<property name="threadsAllowedToBlockForConnectionMultiplier" value="${mongo.server.threadsAllowedToBlockForConnectionMultiplier}"></property>
+		<property name="maxWaitTime" value="${mongo.server.maxWaitTime}"></property>
+		<property name="connectTimeout" value="${mongo.server.connectTimeout}"></property>
+		<property name="socketTimeout" value="${mongo.server.socketTimeout}"></property>
+		<property name="sslEnabled" value="${mongo.server.sslEnabled}"></property>
+	</bean>
+
+	<bean id="mongoDBFactory" class="com.sunshine.framework.mvc.mongodb.MongoDBFactory">
+		<property name="config" ref="mongoDBConfig"></property>
+	</bean>
+	
+	<bean id="mongoClient" factory-bean="mongoDBFactory" factory-method="createClient" />
+</beans>

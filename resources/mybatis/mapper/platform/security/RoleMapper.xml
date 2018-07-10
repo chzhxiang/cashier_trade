@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.security.entity.Role" >
+  <resultMap id="BaseResultMap" type="com.sunshine.platform.security.entity.Role" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="CP" property="cp" jdbcType="VARCHAR" />
+    <result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="VARCHAR" />
+    <result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+    <result column="HAS_USER" property="hasUser" jdbcType="INTEGER"/>
+  </resultMap>
+  
+    <resultMap id="SecurityResultMap" type="com.sunshine.platform.security.entity.Role" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ROLE_CODE" property="roleCode" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+    <result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="HASFLAG" property="hasFlag" jdbcType="VARCHAR" />
+    <result column="CP" property="cp" jdbcType="VARCHAR" />
+    <result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="VARCHAR" />
+    <result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    ID, ROLE_CODE, ROLE_NAME, ROLE_DESC, STATUS, CP, CP_NAME, CT, EP, EP_NAME, ET
+  </sql>
+  <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String" >
+    delete from SYS_ROLE
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByIds" parameterType="java.util.List" >
+    delete from SYS_ROLE where ID in 
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")"> 
+      #{item}
+    </foreach>
+  </delete>
+  
+  
+  
+  <insert id="insert" parameterType="com.sunshine.platform.security.entity.Role" >
+    insert into SYS_ROLE (ID, ROLE_CODE, ROLE_NAME, ROLE_DESC, 
+      STATUS, CP, CP_NAME, 
+      CT, EP, EP_NAME, ET)
+    values (#{id,jdbcType=VARCHAR}, #{roleCode,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR}, #{roleDesc,jdbcType=VARCHAR}, 
+      #{status,jdbcType=INTEGER},#{cp,jdbcType=VARCHAR}, #{cpName,jdbcType=VARCHAR}, 
+      #{ct,jdbcType=TIMESTAMP}, #{ep,jdbcType=VARCHAR}, #{epName,jdbcType=VARCHAR}, #{et,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertWithoutNull" parameterType="com.sunshine.platform.security.entity.Role" >
+    insert into SYS_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        ID,
+      </if>
+      <if test="roleCode != null" >
+        ROLE_CODE,
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME,
+      </if>
+      <if test="roleDesc != null" >
+        ROLE_DESC,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="roleCode != null" >
+        #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null" >
+        #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.sunshine.platform.security.entity.Role" >
+    update SYS_ROLE
+    <set>
+      <if test="roleCode != null" >
+        ROLE_CODE = #{roleCode,jdbcType=VARCHAR},
+      </if>
+      <if test="roleName != null" >
+        ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      </if>
+      <if test="roleDesc != null" >
+        ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+   <select id="findRoleByName" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> 
+		from SYS_ROLE h where h.ROLE_NAME = #{roleName}
+  </select>
+   <select id="findRoleByCode" resultMap="BaseResultMap">
+		select <include refid="Base_Column_List" /> 
+		from SYS_ROLE h where h.ROLE_CODE = #{roleCode}
+  </select>
+  
+   <select id="findListByPage" resultMap="BaseResultMap">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE
+    <where> 
+    	1=1 
+      <if test="searchValue != null and searchValue != ''" >
+      and (ROLE_NAME like CONCAT('%',trim('${searchValue}'),'%' ) or ROLE_CODE like CONCAT('%',trim('${searchValue}'),'%' ))   
+      </if>
+    </where>
+    </select>
+ <select id="findAllRole" resultMap="BaseResultMap">
+  	select 
+  	<include refid="Base_Column_List" />
+    from SYS_ROLE r
+    <where> 
+    	STATUS = 1
+    </where>
+  </select>
+  <select id="findRoleByProperties" resultMap="BaseResultMap" parameterType="java.util.Map">
+  	select 
+    <include refid="Base_Column_List" />
+    from SYS_ROLE
+    Where 1=1
+     <if test="roleCode != null and roleCode != ''">
+     	AND ROLE_CODE = #{roleCode , jdbcType=VARCHAR}
+     </if>
+     <if test="roleName != null and roleName != ''">
+     	AND ROLE_NAME = #{roleName , jdbcType=VARCHAR}
+     </if>
+  </select>
+  
+  <select id="findRoleByUserId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  	select r.* 
+  	from SYS_USER_ROLE ur , SYS_ROLE r WHERE ur.ROLE_ID = r.ID AND ur.USER_ID = #{userId , jdbcType=VARCHAR} 
+  </select>
+  
+  <select id="findAllRoleWithUserInfo" resultMap="BaseResultMap" parameterType="java.lang.String">
+  		select r.*,
+  	        (case when r.id in (
+        		SELECT ROLE_ID FROM SYS_USER_ROLE WHERE USER_ID = #{userId,jdbcType=VARCHAR}
+        	) then 1 else 0 end) HASUSER
+    from SYS_ROLE r
+    <where> 
+    	STATUS = 1
+    </where>
+  </select>
+</mapper>

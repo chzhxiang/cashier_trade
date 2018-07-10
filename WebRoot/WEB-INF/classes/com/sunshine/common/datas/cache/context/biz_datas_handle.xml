@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd 
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.1.xsd 
+    http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.1.xsd 
+    http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.1.xsd 
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd"
+	default-lazy-init="false">
+   
+   <bean id="merchantCache" class="com.sunshine.common.datas.cache.platform.merchant.MerchantCache" />
+   
+   <bean id="applicationChannelCache" class="com.sunshine.common.datas.cache.platform.channel.ApplicationChannelCache" />
+   
+    <bean id="tradeOrderCache" class="com.sunshine.common.datas.cache.component.TradeOrderCache" />
+    
+    <!-- 银行卡信息缓存 -->
+    <bean id="bankCardCache" class="com.sunshine.common.datas.cache.component.BankCardCache" />
+    
+     <!--登录次数缓存记录 -->
+   <bean id="loginTimesCache" class="com.sunshine.common.datas.cache.platform.security.LoginTimesCache" /> 
+    
+    <bean id="paymentExceptionCache" class="com.sunshine.common.datas.cache.component.PaymentExceptionCache" />
+    
+    <bean id="refundExceptionCache" class="com.sunshine.common.datas.cache.component.RefundExceptionCache" />
+    
+    <bean id="paymentOvertimeExceptionCache" class="com.sunshine.common.datas.cache.component.PaymentOvertimeExceptionCache" />
+</beans>	

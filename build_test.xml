@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<project name="Sunshine_YCT" default="tar" basedir=".">
+	<!-- 定义源程序文件夹 -->
+	<property name="ant.dir" location="/home/data/jenkins/ant/cashier_trade_test"/>
+	<property name="tomcat.dir" value="/home/data/tomcat_cashier_trade" />
+	<property name="deploy.dir" value="/home/data/application/cashier_trade/server/jenkins" />
+	<property name="script.dir" value="/home/ycttest/scripts/bin" />
+	
+	<property name="src.dir" location="${basedir}/src"/>
+	<property name="resource.dir" location="${basedir}/resources"/>
+	<property name="ant.resource.dir" location="${ant.dir}/resources"/>
+	<property name="web.dir" location="${basedir}/WebRoot"/>
+	<property name="classes" location="${web.dir}/WEB-INF/classes" />
+	<property name="data.context" location="${classes}/com/sunshine/common/datas/cache/context" />
+	<!-- 定义目标程序文件夹 -->
+	<property name="release.dir" location="release"/>
+	<property name="doc.dir" location="${release.dir}/doc" />
+	<!--定义其他文件夹 -->
+	<property name="lib.dir" location="${web.dir}/WEB-INF/lib"/>
+	<!-- 定义其他文件 -->
+	<property name="release.war" location="${release.dir}/{project.name}.war"/>
+	<property name="backup" location="${script.dir}/cashiertar.sh	"/>
+		
+	<!-- 设置path -->
+	<path id="project.classpath">
+		<pathelement location="${java.home}/jre/lib/rt.jar"/>
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	<target name="init" description="医程通初始化">
+		<tstamp>
+			<format property="now" pattern="yyyy-MM-dd HH:mm"/>
+		</tstamp>
+		<echo message="清除classes" />
+		<delete dir="${classes}" />
+		<delete dir="${release.dir}" />
+	</target>
+		
+	<target name="prepare" depends="init" description="创建文件目录">
+		<!--  创建目标程序文件夹  -->
+		<mkdir dir="${classes}"/>
+		<mkdir dir="${release.dir}"/>
+		<!--  创建其他文件夹  -->
+		<mkdir dir="${doc.dir}"/>
+		<mkdir dir="${data.context}"/>
+	</target>
+	<target name="compile" depends="prepare" description="编译所有源程序." unless="final.version">
+		<javac srcdir="${src.dir}" destdir="${classes}" debug="on" deprecation="on" encoding="UTF-8" includeAntRuntime="false"> 
+			<compilerarg value="-XDignore.symbol.file"/>
+			<classpath refid="project.classpath"/>
+		</javac>
+	</target>
+	<target name="copy" depends="compile">
+	  <echo message="复制资源文件到classes目录" />
+	  <copy preservelastmodified="true" overwrite="true" todir="${classes}">
+		  <fileset dir="${resource.dir}"></fileset>
+	  </copy>
+	  <echo message="复制ant.resource.dir" />
+	  <copy preservelastmodified="true" overwrite="true" todir="${classes}">
+		  <fileset dir="${ant.resource.dir}"></fileset>
+	  </copy>	  
+	  <copy todir="${data.context}">
+	  	  <fileset dir="${src.dir}/com/sunshine/common/datas/cache/context"></fileset>
+	  </copy>
+		
+	  <delete dir="${deploy.dir}" />
+	  <mkdir dir="${deploy.dir}"/>
+	  <copy todir="${deploy.dir}">
+		  <fileset dir="${web.dir}"></fileset>
+	  </copy>
+	</target>
+	<target name="tar"   depends="copy">
+	        <echo message="新版本打包备份" />
+			<exec executable="/bin/sh">
+				<arg line="-c ${backup}" />
+	        </exec> 
+	</target>	
+</project>

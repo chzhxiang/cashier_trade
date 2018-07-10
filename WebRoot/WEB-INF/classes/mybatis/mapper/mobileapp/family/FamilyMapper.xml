@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sunshine.mobileapp.family.entity.Family">
+  <resultMap id="BaseResultMap" type="com.sunshine.mobileapp.family.entity.Family">
+    <id column="ID" jdbcType="VARCHAR" property="id" />
+    <result column="FULLNAME" jdbcType="VARCHAR" property="fullname" />
+    <result column="MOBILE" jdbcType="VARCHAR" property="mobile" />
+    <result column="SEX" jdbcType="BIGINT" property="sex" />
+    <result column="RELATION" jdbcType="BIGINT" property="relation" />
+    <result column="ID_CARD" jdbcType="VARCHAR" property="idCard" />
+    <result column="ID_TYPE" jdbcType="BIGINT" property="idType" />
+    <result column="BIRTHDAY" jdbcType="DATE" property="birthday" />
+    <result column="AGE" jdbcType="BIGINT" property="age" />
+    <result column="STATUS" jdbcType="BIGINT" property="status" />
+    <result column="GUARDER_NAME" jdbcType="VARCHAR" property="guarderName" />
+    <result column="GUARDER_MOBILE" jdbcType="VARCHAR" property="guarderMobile" />
+    <result column="GUARDER_CARDTYPE" jdbcType="BIGINT" property="guarderCardtype" />
+    <result column="GUARDER_CARDNO" jdbcType="VARCHAR" property="guarderCardno" />
+    <result column="DEFAULTPATIENT" jdbcType="BIGINT" property="defaultpatient" />
+    <result column="CT" jdbcType="TIMESTAMP" property="ct" />
+    <result column="ET" jdbcType="TIMESTAMP" property="et" />
+    <result column="ADDRESS" jdbcType="VARCHAR" property="address" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, FULLNAME, MOBILE, SEX, RELATION, ID_CARD, ID_TYPE, BIRTHDAY, AGE, STATUS, GUARDER_NAME, 
+    GUARDER_MOBILE, GUARDER_CARDTYPE, GUARDER_CARDNO, DEFAULTPATIENT, CT, ET, ADDRESS
+  </sql>
+  <select id="findById" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_FAMILY
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from BIZ_FAMILY
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.sunshine.mobileapp.family.entity.Family">
+    insert into BIZ_FAMILY (ID, FULLNAME, MOBILE, 
+      SEX, RELATION, ID_CARD, 
+      ID_TYPE, BIRTHDAY, AGE, STATUS, 
+      GUARDER_NAME, GUARDER_MOBILE, GUARDER_CARDTYPE, 
+      GUARDER_CARDNO, DEFAULTPATIENT, CT, 
+      ET, ADDRESS)
+    values (#{id,jdbcType=VARCHAR}, #{fullname,jdbcType=VARCHAR}, #{mobile,jdbcType=VARCHAR}, 
+      #{sex,jdbcType=BIGINT}, #{relation,jdbcType=BIGINT}, #{idCard,jdbcType=VARCHAR}, 
+      #{idType,jdbcType=BIGINT}, #{birthday,jdbcType=DATE}, #{age,jdbcType=BIGINT}, #{status,jdbcType=BIGINT}, 
+      #{guarderName,jdbcType=VARCHAR}, #{guarderMobile,jdbcType=VARCHAR}, #{guarderCardtype,jdbcType=BIGINT}, 
+      #{guarderCardno,jdbcType=VARCHAR}, #{defaultpatient,jdbcType=BIGINT}, #{ct,jdbcType=TIMESTAMP}, 
+      #{et,jdbcType=TIMESTAMP}, #{address,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertWithoutNull" parameterType="com.sunshine.mobileapp.family.entity.Family">
+    insert into BIZ_FAMILY
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="fullname != null">
+        FULLNAME,
+      </if>
+      <if test="mobile != null">
+        MOBILE,
+      </if>
+      <if test="sex != null">
+        SEX,
+      </if>
+      <if test="relation != null">
+        RELATION,
+      </if>
+      <if test="idCard != null">
+        ID_CARD,
+      </if>
+      <if test="idType != null">
+        ID_TYPE,
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY,
+      </if>
+      <if test="age != null">
+        AGE,
+      </if>
+      <if test="status != null">
+        STATUS,
+      </if>
+      <if test="guarderName != null">
+        GUARDER_NAME,
+      </if>
+      <if test="guarderMobile != null">
+        GUARDER_MOBILE,
+      </if>
+      <if test="guarderCardtype != null">
+        GUARDER_CARDTYPE,
+      </if>
+      <if test="guarderCardno != null">
+        GUARDER_CARDNO,
+      </if>
+      <if test="defaultpatient != null">
+        DEFAULTPATIENT,
+      </if>
+      <if test="ct != null">
+        CT,
+      </if>
+      <if test="et != null">
+        ET,
+      </if>
+      <if test="address != null">
+        ADDRESS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="fullname != null">
+        #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="relation != null">
+        #{relation,jdbcType=BIGINT},
+      </if>
+      <if test="idCard != null">
+        #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null">
+        #{idType,jdbcType=BIGINT},
+      </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="age != null">
+        #{age,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=BIGINT},
+      </if>
+      <if test="guarderName != null">
+        #{guarderName,jdbcType=VARCHAR},
+      </if>
+      <if test="guarderMobile != null">
+        #{guarderMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="guarderCardtype != null">
+        #{guarderCardtype,jdbcType=BIGINT},
+      </if>
+      <if test="guarderCardno != null">
+        #{guarderCardno,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultpatient != null">
+        #{defaultpatient,jdbcType=BIGINT},
+      </if>
+      <if test="ct != null">
+        #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="et != null">
+        #{et,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="com.sunshine.mobileapp.family.entity.Family">
+    update BIZ_FAMILY
+    <set>
+      <if test="fullname != null">
+        FULLNAME = #{fullname,jdbcType=VARCHAR},
+      </if>
+      <if test="mobile != null">
+        MOBILE = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="sex != null">
+        SEX = #{sex,jdbcType=BIGINT},
+      </if>
+      <if test="relation != null">
+        RELATION = #{relation,jdbcType=BIGINT},
+      </if>
+      <if test="idCard != null">
+        ID_CARD = #{idCard,jdbcType=VARCHAR},
+      </if>
+      <if test="idType != null">
+        ID_TYPE = #{idType,jdbcType=BIGINT},
+      </if>
+      <if test="birthday != null">
+        BIRTHDAY = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="age != null">
+        AGE = #{age,jdbcType=BIGINT},
+      </if>
+      <if test="status != null">
+        STATUS = #{status,jdbcType=BIGINT},
+      </if>
+      <if test="guarderName != null">
+        GUARDER_NAME = #{guarderName,jdbcType=VARCHAR},
+      </if>
+      <if test="guarderMobile != null">
+        GUARDER_MOBILE = #{guarderMobile,jdbcType=VARCHAR},
+      </if>
+      <if test="guarderCardtype != null">
+        GUARDER_CARDTYPE = #{guarderCardtype,jdbcType=BIGINT},
+      </if>
+      <if test="guarderCardno != null">
+        GUARDER_CARDNO = #{guarderCardno,jdbcType=VARCHAR},
+      </if>
+      <if test="defaultpatient != null">
+        DEFAULTPATIENT = #{defaultpatient,jdbcType=BIGINT},
+      </if>
+      <if test="ct != null">
+        CT = #{ct,jdbcType=TIMESTAMP},
+      </if>
+      <if test="et != null">
+        ET = #{et,jdbcType=TIMESTAMP},
+      </if>
+      <if test="address != null">
+        ADDRESS = #{address,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateById" parameterType="com.sunshine.mobileapp.family.entity.Family">
+    update BIZ_FAMILY
+    set FULLNAME = #{fullname,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      SEX = #{sex,jdbcType=BIGINT},
+      RELATION = #{relation,jdbcType=BIGINT},
+      ID_CARD = #{idCard,jdbcType=VARCHAR},
+      ID_TYPE = #{idType,jdbcType=BIGINT},
+      BIRTHDAY = #{birthday,jdbcType=DATE},
+      AGE = #{age,jdbcType=BIGINT},
+      STATUS = #{status,jdbcType=BIGINT},
+      GUARDER_NAME = #{guarderName,jdbcType=VARCHAR},
+      GUARDER_MOBILE = #{guarderMobile,jdbcType=VARCHAR},
+      GUARDER_CARDTYPE = #{guarderCardtype,jdbcType=BIGINT},
+      GUARDER_CARDNO = #{guarderCardno,jdbcType=VARCHAR},
+      DEFAULTPATIENT = #{defaultpatient,jdbcType=BIGINT},
+      CT = #{ct,jdbcType=TIMESTAMP},
+      ET = #{et,jdbcType=TIMESTAMP},
+      ADDRESS = #{address,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <sql id="Base_Column_Where">
+    <where>
+      <if test="fullname != null">
+         and FULLNAME = #{fullname,jdbcType=VARCHAR}
+      </if>
+      <if test="mobile != null">
+         and MOBILE = #{mobile,jdbcType=VARCHAR}
+      </if>
+      <if test="sex != null">
+         and SEX = #{sex,jdbcType=BIGINT}
+      </if>
+      <if test="relation != null">
+         and RELATION = #{relation,jdbcType=BIGINT}
+      </if>
+      <if test="idCard != null">
+         and ID_CARD = #{idCard,jdbcType=VARCHAR}
+      </if>
+      <if test="idType != null">
+         and ID_TYPE = #{idType,jdbcType=BIGINT}
+      </if>
+      <if test="birthday != null">
+         and BIRTHDAY = #{birthday,jdbcType=DATE}
+      </if>
+      <if test="age != null">
+         and AGE = #{age,jdbcType=BIGINT}
+      </if>
+      <if test="status != null">
+         and STATUS = #{status,jdbcType=BIGINT}
+      </if>
+      <if test="guarderName != null">
+         and GUARDER_NAME = #{guarderName,jdbcType=VARCHAR}
+      </if>
+      <if test="guarderMobile != null">
+         and GUARDER_MOBILE = #{guarderMobile,jdbcType=VARCHAR}
+      </if>
+      <if test="guarderCardtype != null">
+         and GUARDER_CARDTYPE = #{guarderCardtype,jdbcType=BIGINT}
+      </if>
+      <if test="guarderCardno != null">
+         and GUARDER_CARDNO = #{guarderCardno,jdbcType=VARCHAR}
+      </if>
+      <if test="defaultpatient != null">
+         and DEFAULTPATIENT = #{defaultpatient,jdbcType=BIGINT}
+      </if>
+      <if test="ct != null">
+         and CT = #{ct,jdbcType=TIMESTAMP}
+      </if>
+      <if test="et != null">
+         and ET = #{et,jdbcType=TIMESTAMP}
+      </if>
+      <if test="address != null">
+         and ADDRESS = #{address,jdbcType=VARCHAR}
+      </if>
+    </where>
+  </sql>
+  <select id="findAll" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_FAMILY
+  </select>
+  <select id="findListByPage" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_FAMILY
+    <where>
+       1=1 
+      <if test="searchValue != null and searchValue != ''">
+        and ( 
+        (FULLNAME like CONCAT('%',trim('${searchValue}'),'%' ) )  or (MOBILE like CONCAT('%',trim('${searchValue}'),'%' ) )  or (SEX like CONCAT('%',trim('${searchValue}'),'%' ) )  or (RELATION like CONCAT('%',trim('${searchValue}'),'%' ) )  or (ID_CARD like CONCAT('%',trim('${searchValue}'),'%' ) )  or (ID_TYPE like CONCAT('%',trim('${searchValue}'),'%' ) )  or (BIRTHDAY like CONCAT('%',trim('${searchValue}'),'%' ) )  or (AGE like CONCAT('%',trim('${searchValue}'),'%' ) )  or (STATUS like CONCAT('%',trim('${searchValue}'),'%' ) )  or (GUARDER_NAME like CONCAT('%',trim('${searchValue}'),'%' ) )  or (GUARDER_MOBILE like CONCAT('%',trim('${searchValue}'),'%' ) )  or (GUARDER_CARDTYPE like CONCAT('%',trim('${searchValue}'),'%' ) )  or (GUARDER_CARDNO like CONCAT('%',trim('${searchValue}'),'%' ) )  or (DEFAULTPATIENT like CONCAT('%',trim('${searchValue}'),'%' ) )  or (CT like CONCAT('%',trim('${searchValue}'),'%' ) )  or (ET like CONCAT('%',trim('${searchValue}'),'%' ) )  or (ADDRESS like CONCAT('%',trim('${searchValue}'),'%' ) ) 
+         )
+      </if>
+    </where>
+  </select>
+  <select id="findByIds" parameterType="java.util.List" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_FAMILY
+    <where >
+      ID in 
+      <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+         #{item} 
+      </foreach>
+    </where >
+  </select>
+  <delete id="deleteByIds" parameterType="java.util.List">
+     delete from 
+    BIZ_FAMILY
+    <where >
+      ID in 
+      <foreach close=")" collection="list" index="index" item="item" open="(" separator=",">
+         #{item} 
+      </foreach>
+    </where >
+  </delete>
+  <insert id="batchInsert" parameterType="java.util.List">
+     insert into 
+    BIZ_FAMILY
+    ( ID FULLNAME MOBILE SEX RELATION ID_CARD ID_TYPE BIRTHDAY AGE STATUS GUARDER_NAME GUARDER_MOBILE GUARDER_CARDTYPE GUARDER_CARDNO DEFAULTPATIENT CT ET ADDRESS)
+    values
+    <foreach collection="list" index="index" item="entity" separator=",">
+      (
+      #{entity.id,jdbcType=VARCHAR},#{entity.fullname,jdbcType=VARCHAR},#{entity.mobile,jdbcType=VARCHAR},#{entity.sex,jdbcType=BIGINT},#{entity.relation,jdbcType=BIGINT},#{entity.idCard,jdbcType=VARCHAR},#{entity.idType,jdbcType=BIGINT},#{entity.birthday,jdbcType=DATE},#{entity.age,jdbcType=BIGINT},#{entity.status,jdbcType=BIGINT},#{entity.guarderName,jdbcType=VARCHAR},#{entity.guarderMobile,jdbcType=VARCHAR},#{entity.guarderCardtype,jdbcType=BIGINT},#{entity.guarderCardno,jdbcType=VARCHAR},#{entity.defaultpatient,jdbcType=BIGINT},#{entity.ct,jdbcType=TIMESTAMP},#{entity.et,jdbcType=TIMESTAMP},#{entity.address,jdbcType=VARCHAR}
+      )
+    </foreach>
+  </insert>
+  
+  <select id="findByMobileAndName" parameterType="java.util.Map" resultMap="BaseResultMap">
+     select 
+    <include refid="Base_Column_List" />
+     from BIZ_FAMILY
+    where 
+    ID_CARD=#{idCard,jdbcType=VARCHAR}
+  </select>
+  
+</mapper>

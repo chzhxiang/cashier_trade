@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.rule.entity.SysRuleConfig">
+	<resultMap id="BaseResultMap"
+		type="com.sunshine.platform.rule.entity.SysRuleConfig">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="RULE_CODE" property="ruleCode" jdbcType="VARCHAR" />
+		<result column="RULE_VALUE" property="ruleValue" jdbcType="VARCHAR" />
+		<result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+		<result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+		<result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+		<result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+		<result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+		<result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+		<result column="FLAG" property="flag" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, RULE_CODE, RULE_VALUE, ATTR1,ATTR2,ATTR3,ATTR4,ATTR5,ATTR6,FLAG,REMARK,CP,CT,EP,ET
+	</sql>
+
+	<insert id="insert" parameterType="com.sunshine.platform.rule.entity.SysRuleConfig">
+		INSERT INTO SYS_RULE_CONFIG(
+		<include refid="Base_Column_List" />
+		) VALUES(
+			#{id,jdbcType=VARCHAR},
+			#{ruleCode,jdbcType=VARCHAR},
+			#{ruleValue,jdbcType=VARCHAR},
+			#{attr1,jdbcType=VARCHAR},
+			#{attr2,jdbcType=VARCHAR},
+			#{attr3,jdbcType=VARCHAR},
+			#{attr4,jdbcType=VARCHAR},
+			#{attr5,jdbcType=VARCHAR},
+			#{attr6,jdbcType=VARCHAR},
+			#{flag,jdbcType=INTEGER},
+			#{remark,jdbcType=VARCHAR},
+			#{cp,jdbcType=VARCHAR},
+			#{ct,jdbcType=TIMESTAMP},
+			#{ep,jdbcType=VARCHAR},
+			#{et,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.sunshine.platform.rule.entity.SysRuleConfig">
+		UPDATE SYS_RULE_CONFIG 
+		<set>
+			<if test="ruleValue != null">
+				RULE_VALUE=#{ruleValue,jdbcType=VARCHAR},
+			</if>
+			<if test="attr1 != null">
+				ATTR1=#{attr1,jdbcType=VARCHAR},
+			</if>
+			<if test="attr2 != null">
+				ATTR2=#{attr2,jdbcType=VARCHAR},
+			</if>
+			<if test="attr3 != null">
+				ATTR3=#{attr3,jdbcType=VARCHAR},
+			</if>
+			<if test="attr4 != null">
+				ATTR4=#{attr4,jdbcType=VARCHAR},
+			</if>
+			<if test="attr5 != null">
+				ATTR5=#{attr5,jdbcType=VARCHAR},
+			</if>
+			<if test="attr6 != null">
+				ATTR6=#{attr6,jdbcType=VARCHAR},
+			</if>
+			<if test="flag != null">
+				FLAG=#{flag,jdbcType=INTEGER},
+			</if>
+			<if test="remark != null">
+				REMARK=#{remark,jdbcType=VARCHAR},
+			</if>
+			<if test="ep != null">
+				EP=#{ep,jdbcType=VARCHAR},
+			</if>
+			<if test="et != null">
+				ET=#{et,jdbcType=TIMESTAMP}
+			</if>
+		</set>
+		WHERE RULE_CODE=#{ruleCode}
+	</update>
+	
+	<select id="findByRuleCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM SYS_RULE_CONFIG
+	   WHERE RULE_CODE = #{ruleCode,jdbcType=VARCHAR}
+		 AND FLAG = 1
+	</select>
+</mapper>

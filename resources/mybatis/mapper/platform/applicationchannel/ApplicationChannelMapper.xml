@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper
+	namespace="com.sunshine.platform.applicationchannel.entity.ApplicationChannel">
+	<resultMap id="BaseResultMap"
+		type="com.sunshine.platform.applicationchannel.entity.ApplicationChannel">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+
+		<result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
+		<result column="VALUE" property="channelValue" jdbcType="INTEGER" />
+		<result column="NAME" property="channelName" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="CHANNEL_CODE" property="channelCode" jdbcType="VARCHAR" />
+		<result column="VIEW_NAME" property="channelViewName" jdbcType="VARCHAR" />
+		<result column="URL_STATUS" property="urlStatus" jdbcType="INTEGER" />
+		<result column="PARAMS_JSON" property="paramsJson" jdbcType="VARCHAR" />
+		<result column="SEQ" property="seq" jdbcType="INTEGER" />
+		<result column="IS_OPEN" property="isOpen" jdbcType="INTEGER" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID,APP_ID,CHANNEL_CODE,VIEW_NAME,URL_STATUS,PARAMS_JSON,SEQ,IS_OPEN,CP,CP_NAME,CT,EP,EP_NAME,ET
+	</sql>
+	<select id="findById" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		a.ID,a.APP_ID,a.CHANNEL_CODE,a.VIEW_NAME,a.URL_STATUS,d.VALUE,d.NAME,c.MERCHANT_NO,a.PARAMS_JSON,a.SEQ,a.IS_OPEN,a.CP,a.CP_NAME,a.CT,a.EP,a.EP_NAME,a.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL a
+		LEFT JOIN BIZ_MERCHANT_APPLICATION b ON b.APP_ID = a.APP_ID
+		LEFT JOIN BIZ_MERCHANT c ON c.MERCHANT_NO = b.MERCHANT_NO
+		LEFT JOIN BIZ_TRADE_CHANNEL d ON d.CODE = a.CHANNEL_CODE
+		WHERE a.ID=#{id}
+	</select>
+	
+	<select id="findByIds" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT
+		a.ID,a.APP_ID,a.CHANNEL_CODE,a.VIEW_NAME,a.URL_STATUS,d.VALUE,d.NAME,c.MERCHANT_NO,a.PARAMS_JSON,a.SEQ,a.IS_OPEN,a.CP,a.CP_NAME,a.CT,a.EP,a.EP_NAME,a.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL a
+		LEFT JOIN BIZ_MERCHANT_APPLICATION b ON b.APP_ID = a.APP_ID
+		LEFT JOIN BIZ_MERCHANT c ON c.MERCHANT_NO = b.MERCHANT_NO
+		LEFT JOIN BIZ_TRADE_CHANNEL d ON d.CODE = a.CHANNEL_CODE
+		WHERE a.id in
+		 <foreach collection="ids" item="id" open="(" close=")"
+		    separator=",">
+		    #{id}
+		 </foreach>
+	</select>
+	<select id="findByAppId" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		<!-- SELECT
+		A.ID,A.APP_ID,A.CHANNEL_CODE,B.NAME,A.PARAMS_JSON,A.SEQ,A.IS_OPEN,A.CP,A.CP_NAME,A.CT,A.EP,A.EP_NAME,A.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL A LEFT JOIN BIZ_TRADE_CHANNEL B ON A.CHANNEL_CODE = B.CODE
+		WHERE A.APP_ID =
+		#{appId,jdbcType=VARCHAR} ORDER BY SEQ ASC -->
+		SELECT
+		a.ID,a.APP_ID,a.CHANNEL_CODE,a.VIEW_NAME,a.URL_STATUS,d.VALUE,d.NAME,c.MERCHANT_NO,a.PARAMS_JSON,a.SEQ,a.IS_OPEN,a.CP,a.CP_NAME,a.CT,a.EP,a.EP_NAME,a.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL a
+		LEFT JOIN BIZ_MERCHANT_APPLICATION b ON b.APP_ID = a.APP_ID
+		LEFT JOIN BIZ_MERCHANT c ON c.MERCHANT_NO = b.MERCHANT_NO
+		LEFT JOIN BIZ_TRADE_CHANNEL d ON d.CODE = a.CHANNEL_CODE
+		WHERE a.APP_ID=#{appId} ORDER BY a.SEQ ASC
+	</select>
+	
+	<select id="findTradeChannelByAppIdChannelCode" resultMap="BaseResultMap" parameterType="java.util.Map">
+		SELECT
+		a.ID,a.APP_ID,a.CHANNEL_CODE,a.VIEW_NAME,a.URL_STATUS,d.VALUE,d.NAME,c.MERCHANT_NO,a.PARAMS_JSON,a.SEQ,a.IS_OPEN,a.CP,a.CP_NAME,a.CT,a.EP,a.EP_NAME,a.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL a
+		LEFT JOIN BIZ_MERCHANT_APPLICATION b ON b.APP_ID = a.APP_ID
+		LEFT JOIN BIZ_MERCHANT c ON c.MERCHANT_NO = b.MERCHANT_NO
+		LEFT JOIN BIZ_TRADE_CHANNEL d ON d.CODE = a.CHANNEL_CODE
+		WHERE a.APP_ID=#{appId} AND d.CODE=#{channelCode}
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		a.ID,a.APP_ID,a.CHANNEL_CODE,a.VIEW_NAME,a.URL_STATUS,d.VALUE,d.NAME,c.MERCHANT_NO,a.PARAMS_JSON,a.SEQ,a.IS_OPEN,a.CP,a.CP_NAME,a.CT,a.EP,a.EP_NAME,a.ET
+		FROM BIZ_APPLICATION_TRADE_CHANNEL a
+		LEFT JOIN BIZ_MERCHANT_APPLICATION b ON b.APP_ID = a.APP_ID
+		LEFT JOIN BIZ_MERCHANT c ON c.MERCHANT_NO = b.MERCHANT_NO
+		LEFT JOIN BIZ_TRADE_CHANNEL d ON d.CODE = a.CHANNEL_CODE
+	</select>
+
+	<insert id="insert"
+		parameterType="com.sunshine.platform.applicationchannel.entity.ApplicationChannel">
+		INSERT INTO BIZ_APPLICATION_TRADE_CHANNEL(
+		<include refid="Base_Column_List" />
+		) VALUES(
+		#{id,jdbcType=VARCHAR},#{appId,jdbcType=VARCHAR},#{channelCode,jdbcType=VARCHAR},#{channelViewName,jdbcType=VARCHAR},#{urlStatus,jdbcType=VARCHAR},
+		#{paramsJson,jdbcType=VARCHAR},#{seq,jdbcType=VARCHAR},#{isOpen,jdbcType=INTEGER},
+		#{cp,jdbcType=VARCHAR},#{cpName,jdbcType=VARCHAR},#{ct,jdbcType=TIMESTAMP},
+		#{ep,jdbcType=VARCHAR},#{epName,jdbcType=VARCHAR},#{et,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update"
+		parameterType="com.sunshine.platform.applicationchannel.entity.ApplicationChannel">
+		UPDATE BIZ_APPLICATION_TRADE_CHANNEL 
+		<set>
+	  	 	<if test="paramsJson != null and paramsJson != ''">PARAMS_JSON=#{paramsJson,jdbcType=VARCHAR},</if>
+	  	 	<if test="seq != null and seq != ''">SEQ=#{seq,jdbcType=INTEGER},</if>
+	  	 	IS_OPEN=#{isOpen,jdbcType=INTEGER},
+	  	 	EP=#{ep,jdbcType=VARCHAR},EP_NAME=#{epName,jdbcType=VARCHAR},ET=#{et,jdbcType=TIMESTAMP}
+	  	</set>
+	  	WHERE ID=#{id}
+	  	
+	  	<!-- SET
+		PARAMS_JSON=#{paramsJson,jdbcType=VARCHAR},
+		SEQ=#{seq,jdbcType=INTEGER},
+		EP=#{ep,jdbcType=VARCHAR},EP_NAME=#{epName,jdbcType=VARCHAR},ET=#{et,jdbcType=TIMESTAMP}
+		WHERE ID=#{id} -->
+	</update>
+
+	<update id="updateChannelViewName" parameterType="java.util.Map">
+		UPDATE BIZ_APPLICATION_TRADE_CHANNEL 
+		SET VIEW_NAME=#{channelViewName,jdbcType=VARCHAR},
+		URL_STATUS=#{urlStatus,jdbcType=INTEGER}
+	  	WHERE ID=#{id}
+	</update>
+	
+	<update id="updateChannelParams" parameterType="java.util.Map">
+		UPDATE BIZ_APPLICATION_TRADE_CHANNEL 
+		SET PARAMS_JSON=#{paramsJson,jdbcType=VARCHAR}
+	  	WHERE ID=#{id}
+	</update>
+	
+	<update id="updateChannelOpen" parameterType="java.util.Map">
+		UPDATE BIZ_APPLICATION_TRADE_CHANNEL
+		SET SEQ=#{seq,jdbcType=INTEGER},
+		IS_OPEN=#{isOpen,jdbcType=INTEGER}
+	  	WHERE ID=#{id}
+	</update>
+</mapper>

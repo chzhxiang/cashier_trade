@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.security.entity.User" >
+  <resultMap id="BaseResultMap" type="com.sunshine.platform.security.entity.User" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="ACCOUNT" property="account" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="ROLE_IDS" property="roleIds" jdbcType="VARCHAR" />
+    <result column="OWNED_MERCHANT" property="ownedMerchant" jdbcType="VARCHAR" />
+	<result column="OWNED_MERCHANT_NAME" property="ownedMerchantName" jdbcType="VARCHAR" />
+	<result column="OWNED_APPLICATION" property="ownedApplication" jdbcType="VARCHAR" />
+	<result column="OWNED_APPLICATION_NAME" property="ownedApplicationName" jdbcType="VARCHAR" />
+	<result column="TYPE" property="type" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="INTEGER" />
+    <result column="CP" property="cp" jdbcType="VARCHAR" />
+    <result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+    <result column="CT" property="ct" jdbcType="TIMESTAMP" />
+    <result column="EP" property="ep" jdbcType="VARCHAR" />
+    <result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+    <result column="ET" property="et" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, 
+    ACCOUNT, 
+    NAME, 
+    MOBILE, 
+    PASSWORD,
+    ROLE_IDS,  
+    OWNED_MERCHANT,
+    OWNED_MERCHANT_NAME,
+    OWNED_APPLICATION,
+    OWNED_APPLICATION_NAME,
+    TYPE,
+    STATUS, 
+    CP, 
+    CP_NAME, 
+    CT, 
+    EP, 
+    EP_NAME, 
+    ET
+  </sql>
+   <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <delete id="delete" parameterType="java.lang.String" >
+    delete from SYS_USER
+    where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="deleteByIds" parameterType="java.util.List" >
+    delete from SYS_USER where ID in 
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")"> 
+      #{item}
+    </foreach>
+  </delete>
+  
+  
+  <insert id="insert" parameterType="com.sunshine.platform.security.entity.User" >
+    insert into SYS_USER (
+    	ID, 
+    	ACCOUNT, 
+    	NAME, 
+      	PASSWORD, 
+      	MOBILE, 
+      	ROLE_IDS,
+      	STATUS, 
+      	OWNED_MERCHANT,
+	    OWNED_MERCHANT_NAME,
+	    OWNED_APPLICATION,
+	    OWNED_APPLICATION_NAME,
+	    TYPE, 
+     	CP, 
+     	CP_NAME, 
+     	CT, 
+     	EP, 
+      	EP_NAME, 
+      	ET)
+    values (
+    	#{id,jdbcType=VARCHAR}, 
+    	#{account,jdbcType=VARCHAR}, 
+    	#{name,jdbcType=VARCHAR}, 
+      	#{password,jdbcType=VARCHAR}, 
+      	#{mobile,jdbcType=VARCHAR}, 
+      	#{roleIds,jdbcType=VARCHAR},
+      	#{status,jdbcType=INTEGER}, 
+      	#{ownedMerchant,jdbcType=INTEGER}, 
+      	#{ownedMerchantName,jdbcType=INTEGER}, 
+      	#{ownedApplication,jdbcType=INTEGER}, 
+      	#{ownedApplicationName,jdbcType=INTEGER}, 
+      	#{type,jdbcType=INTEGER}, 
+     	#{cp,jdbcType=VARCHAR}, 
+     	#{cpName,jdbcType=VARCHAR}, 
+     	#{ct,jdbcType=TIMESTAMP}, 
+     	#{ep,jdbcType=VARCHAR}, 
+      	#{epName,jdbcType=VARCHAR}, 
+      	#{et,jdbcType=TIMESTAMP})
+  </insert>
+  
+  <update id="updateRoleIds" parameterType="java.util.Map">
+  	update SYS_USER
+    	set ROLE_IDS = #{roleIds,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="update" parameterType="com.sunshine.platform.security.entity.User" >
+    update SYS_USER
+    <set> 
+	      <if test="account != null and account != ''" >
+	    	ACCOUNT = #{account,jdbcType=VARCHAR},
+	      </if>
+	      <if test="name != null and name != ''" >
+	        NAME = #{name,jdbcType=VARCHAR},
+	      </if>
+	      <if test="mobile != null and mobile != ''" >
+	        MOBILE = #{mobile,jdbcType=VARCHAR},
+	      </if>
+	      <if test="roleIds != null and roleIds != ''" >
+	        ROLE_IDS = #{roleIds,jdbcType=VARCHAR},
+	      </if>
+	      <if test="password != null and password != ''" >
+	        PASSWORD = #{password,jdbcType=VARCHAR},
+	      </if>
+	      <if test="status != null" >
+	       	STATUS = #{status,jdbcType=INTEGER},
+	      </if>
+	      <if test="ownedMerchant != null" >
+	       	OWNED_MERCHANT = #{ownedMerchant,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ownedMerchantName != null" >
+	       	OWNED_MERCHANT_NAME = #{ownedMerchantName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ownedApplication != null" >
+	       	OWNED_APPLICATION = #{ownedApplication,jdbcType=VARCHAR},
+	      </if>
+	      <if test="ownedApplicationName != null" >
+	       	OWNED_APPLICATION_NAME = #{ownedApplicationName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="type != null" >
+	       	TYPE = #{type,jdbcType=INTEGER},
+	      </if>
+	      <if test="ep != null" >
+	        EP = #{ep,jdbcType=VARCHAR},
+	      </if>
+	      <if test="epName != null" >
+	        EP_NAME = #{epName,jdbcType=VARCHAR},
+	      </if>
+	      <if test="et != null" >
+	        ET = #{et,jdbcType=TIMESTAMP},
+	      </if>
+      </set> 
+      where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  
+   <select id="findUserByAccount" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select <include refid="Base_Column_List" /> 
+		   from SYS_USER h 
+		where h.ACCOUNT = #{account}
+  </select>
+  
+  <select id="findListByPage" resultMap="BaseResultMap">
+  	select <include refid="Base_Column_List" />
+    from SYS_USER
+    <where> 
+    	1=1 
+      <if test="searchValue != null and searchValue != ''" >
+      		and (ACCOUNT like CONCAT('%',trim('${searchValue}'),'%' ) or NAME like CONCAT('%',trim('${searchValue}'),'%' )    
+      </if>
+    </where>
+  </select>
+  
+</mapper>

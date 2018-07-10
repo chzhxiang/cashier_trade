@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sunshine.platform.merchant.entity.Merchant">
+	<resultMap id="BaseResultMap"
+		type="com.sunshine.platform.merchant.entity.Merchant">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="MERCHANT_NO" property="merchantNo" jdbcType="VARCHAR" />
+		<result column="MERCHANT_NAME" property="merchantName"
+			jdbcType="VARCHAR" />
+		<result column="MERCHANT_ADDRESS" property="merchantAddress"
+			jdbcType="VARCHAR" />
+		<result column="LINKMAN_NAME" property="linkmanName" jdbcType="VARCHAR" />
+		<result column="MOBILE" property="mobile" jdbcType="VARCHAR" />
+		<result column="QQ" property="qq" jdbcType="VARCHAR" />
+		<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="INTEGER" />
+		<result column="CP" property="cp" jdbcType="VARCHAR" />
+		<result column="CP_NAME" property="cpName" jdbcType="VARCHAR" />
+		<result column="CT" property="ct" jdbcType="TIMESTAMP" />
+		<result column="EP" property="ep" jdbcType="VARCHAR" />
+		<result column="EP_NAME" property="epName" jdbcType="VARCHAR" />
+		<result column="ET" property="et" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		ID, MERCHANT_NO, MERCHANT_NAME, MERCHANT_ADDRESS,
+		LINKMAN_NAME, MOBILE, QQ, EMAIL, STATUS,
+		CP, CP_NAME, CT, EP,
+		EP_NAME,ET
+	</sql>
+
+	<select id="findById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT
+		WHERE ID = #{id,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findByMerchantNo" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT
+		WHERE MERCHANT_NO = #{merchantNo,jdbcType=VARCHAR}
+	</select>
+
+	<select id="findListByPage" resultMap="BaseResultMap"
+		parameterType="java.util.Map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT
+		WHERE 1=1
+		<if test="merchantName!=null and merchantName!=''">
+			AND MERCHANT_NAME LIKE
+			CONCAT('%',trim('${merchantName}'),'%')
+		</if>
+		<if test="linkmanName!=null and linkmanName!=''">
+			AND LINKMAN_NAME LIKE
+			CONCAT('%',trim('${linkmanName}'),'%')
+		</if>
+		<if test="mobile!=null and mobile!=''">
+			AND MOBILE LIKE CONCAT('%',trim('${mobile}'),'%')
+		</if>
+		ORDER BY CT DESC
+	</select>
+
+	<select id="findAll" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM BIZ_MERCHANT
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		DELETE FROM
+		BIZ_MERCHANT
+		WHERE ID = #{id,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="com.sunshine.platform.merchant.entity.Merchant">
+		INSERT INTO BIZ_MERCHANT(
+		<include refid="Base_Column_List" />
+		) VALUES(
+		#{id,jdbcType=VARCHAR},#{merchantNo,jdbcType=VARCHAR},#{merchantName,jdbcType=VARCHAR},
+		#{merchantAddress,jdbcType=VARCHAR},#{linkmanName,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+		#{qq,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{status,jdbcType=INTEGER},
+		#{cp,jdbcType=VARCHAR},#{cpName,jdbcType=VARCHAR},#{ct,jdbcType=TIMESTAMP},
+		#{ep,jdbcType=VARCHAR},#{epName,jdbcType=VARCHAR},#{et,jdbcType=TIMESTAMP}
+		)
+	</insert>
+
+	<update id="update" parameterType="com.sunshine.platform.merchant.entity.Merchant">
+		UPDATE BIZ_MERCHANT SET
+		MERCHANT_NAME=#{merchantName,jdbcType=VARCHAR},MERCHANT_ADDRESS=#{merchantAddress,jdbcType=VARCHAR},
+		LINKMAN_NAME=#{linkmanName,jdbcType=VARCHAR},MOBILE=#{mobile,jdbcType=VARCHAR},
+		QQ=#{qq,jdbcType=VARCHAR},EMAIL=#{email,jdbcType=VARCHAR},STATUS=#{status,jdbcType=INTEGER},
+		EP=#{ep,jdbcType=VARCHAR},EP_NAME=#{epName,jdbcType=VARCHAR},ET=#{et,jdbcType=TIMESTAMP}
+		WHERE MERCHANT_NO=#{merchantNo}
+	</update>
+</mapper>
